@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼豆像素对齐工具</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="pixel-style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>拼豆像素对齐工具</h1>
+            <p>上传像素图，通过四条参考线对齐四个像素格子，转换为拼豆图案</p>
+            <nav class="page-nav">
+                <a href="index.html" class="nav-link">图片转拼豆</a>
+                <a href="pixel.html" class="nav-link active">像素对齐</a>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧功能区 -->
+            <div class="left-panel">
+                <div class="card">
+                    <h2 class="card-title">对齐设置</h2>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="imageInput" accept="image/*">
+                        <div class="upload-icon">+</div>
+                        <div class="upload-text">点击或拖拽像素图到这里</div>
+                    </div>
+
+                    <div class="preview-container" id="previewContainer">
+                        <img id="previewImage" class="preview-image" alt="预览">
+                    </div>
+
+                    <!-- 参考线控制区 -->
+                    <div class="line-controls">
+                        <h3>参考线位置</h3>
+                        
+                        <div class="control-group">
+                            <label>上边线 (Y1): <span id="lineY1Value">0</span></label>
+                            <div class="line-slider-row">
+                                <button type="button" class="line-btn" data-target="lineY1" data-step="-1">-</button>
+                                <input type="range" id="lineY1" min="0" max="100" value="10" step="0.5">
+                                <button type="button" class="line-btn" data-target="lineY1" data-step="1">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>下边线 (Y2): <span id="lineY2Value">0</span></label>
+                            <div class="line-slider-row">
+                                <button type="button" class="line-btn" data-target="lineY2" data-step="-1">-</button>
+                                <input type="range" id="lineY2" min="0" max="100" value="90" step="0.5">
+                                <button type="button" class="line-btn" data-target="lineY2" data-step="1">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>左边线 (X1): <span id="lineX1Value">0</span></label>
+                            <div class="line-slider-row">
+                                <button type="button" class="line-btn" data-target="lineX1" data-step="-1">-</button>
+                                <input type="range" id="lineX1" min="0" max="100" value="10" step="0.5">
+                                <button type="button" class="line-btn" data-target="lineX1" data-step="1">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>右边线 (X2): <span id="lineX2Value">0</span></label>
+                            <div class="line-slider-row">
+                                <button type="button" class="line-btn" data-target="lineX2" data-step="-1">-</button>
+                                <input type="range" id="lineX2" min="0" max="100" value="90" step="0.5">
+                                <button type="button" class="line-btn" data-target="lineX2" data-step="1">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 格子预览 -->
+                    <div class="grid-preview">
+                        <h3>当前格子区域</h3>
+                        <div class="grid-info">
+                            <p>格子宽度: <span id="gridWidth">0</span> 像素</p>
+                            <p>格子高度: <span id="gridHeight">0</span> 像素</p>
+                            <p>总格子数: <span id="totalCells">0</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 色号替换功能 -->
+                    <div class="color-replace-section">
+                        <h3>色号替换</h3>
+                        <div class="color-replace-controls">
+                            <div class="control-group">
+                                <label for="brandSelect">选择品牌</label>
+                                <select id="brandSelect">
+                                    <option value="MARD">MARD</option>
+                                    <option value="COCO">COCO</option>
+                                    <option value="漫漫">漫漫</option>
+                                    <option value="盼盼">盼盼</option>
+                                    <option value="咪小窝">咪小窝</option>
+                                </select>
+                            </div>
+                            <div class="color-list-scroll" id="colorListScroll">
+                                <div class="color-items" id="colorItems"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="colorLimit">限制色号数量</label>
+                        <input type="number" id="colorLimit" min="1" max="100" placeholder="不限制">
+                    </div>
+
+                    <button class="btn" id="generateBtn">生成拼豆图案</button>
+                </div>
+            </div>
+
+            <!-- 拖拽调整手柄 -->
+            <div class="resize-handle" id="resizeHandle"></div>
+
+            <!-- 右侧预览区 -->
+            <div class="right-panel">
+                <div class="card result-card">
+                    <h2 class="card-title">对齐预览</h2>
+                    
+                    <div class="preview-controls">
+                        <button id="zoomInBtn" class="tool-btn" title="放大">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
+                        </button>
+                        <button id="zoomOutBtn" class="tool-btn" title="缩小">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
+                        </button>
+                        <button id="resetZoomBtn" class="tool-btn" title="重置缩放">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+                            </svg>
+                        </button>
+                        <span class="zoom-level">缩放: <span id="zoomLevel">100%</span></span>
+                    </div>
+
+                    <div class="alignment-preview" id="alignmentPreview">
+                        <div class="image-container" id="imageContainer">
+                            <img id="previewImage2" alt="对齐预览">
+                            <!-- 参考线 -->
+                            <div class="reference-line line-y1" id="lineY1Visual"></div>
+                            <div class="reference-line line-y2" id="lineY2Visual"></div>
+                            <div class="reference-line line-x1" id="lineX1Visual"></div>
+                            <div class="reference-line line-x2" id="lineX2Visual"></div>
+                            <!-- 选中区域 -->
+                            <div class="selected-area" id="selectedArea"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 底部结果区 -->
+        <div class="result-section" id="resultSection">
+            <div class="card">
+                <h2 class="card-title">生成的拼豆图案</h2>
+                <div class="result-toolbar">
+                    <div class="toolbar">
+                        <button id="pickerTool" class="tool-btn" title="画笔工具">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+                                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+                                <path d="M2 2l7.586 7.586"/>
+                                <circle cx="11" cy="11" r="2"/>
+                            </svg>
+                        </button>
+                        <input type="color" id="colorPicker" title="选择颜色" value="#ff0000">
+                        <button id="resultZoomInBtn" class="tool-btn" title="放大">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
+                        </button>
+                        <button id="resultZoomOutBtn" class="tool-btn" title="缩小">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
+                        </button>
+                        <button id="resultResetZoomBtn" class="tool-btn" title="重置缩放">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+                            </svg>
+                        </button>
+                        <span class="zoom-level">缩放: <span id="resultZoomLevel">100%</span></span>
+                    </div>
+                    <div class="download-btns">
+                        <button class="btn" id="downloadCanvas">下载图案</button>
+                        <button class="btn btn-secondary" id="downloadLegend">下载色号表</button>
+                    </div>
+                </div>
+                <div class="result-canvas-container" id="resultGridContainer">
+                    <div id="resultGrid"></div>
+                </div>
+                <div class="color-summary" id="colorSummary"></div>
+                <canvas id="resultCanvas" style="display: none;"></canvas>
+                <div class="stats" id="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">颗粒总数:</span>
+                        <span class="stat-value" id="totalBeads">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">使用颜色:</span>
+                        <span class="stat-value" id="usedColors">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">图案尺寸:</span>
+                        <span class="stat-value" id="patternSize">0 × 0 cm</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="brand_colors.js"></script>
+    <script src="pixel.js"></script>
+</body>
+</html>

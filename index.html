@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼豆图像转化工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>拼豆图像转化工具</h1>
+            <p>上传图片，自动转换为拼豆图案并匹配品牌色号</p>
+            <nav class="page-nav">
+                <a href="index.html" class="nav-link active">图片转拼豆</a>
+                <a href="pixel.html" class="nav-link">像素对齐</a>
+            </nav>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="card">
+                    <h2 class="card-title">上传图片</h2>
+
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="imageInput" accept="image/*">
+                        <div class="upload-icon">+</div>
+                        <div class="upload-text">点击或拖拽图片到这里</div>
+                    </div>
+
+                    <div class="preview-container" id="previewContainer">
+                        <img id="previewImage" class="preview-image" alt="预览">
+                    </div>
+
+                    <div class="settings-group" style="margin-top: 20px;">
+                        <label for="brandSelect">选择品牌</label>
+                        <select id="brandSelect">
+                            <option value="MARD">MARD</option>
+                            <option value="COCO">COCO</option>
+                            <option value="漫漫">漫漫</option>
+                            <option value="盼盼">盼盼</option>
+                            <option value="咪小窝">咪小窝</option>
+                        </select>
+                        <div class="brand-info" id="brandInfo"></div>
+                    </div>
+
+                    <div class="settings-group">
+                        <label for="quality">格子数量</label>
+                        <select id="quality">
+                            <option value="52">52 × 52</option>
+                            <option value="104">104 × 104</option>
+                            <option value="156">156 × 156</option>
+                            <option value="208">208 × 208</option>
+                            <option value="260">260 × 260</option>
+                            <option value="312">312 × 312</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-group">
+                        <label for="colorCount">颜色数量</label>
+                        <select id="colorCount">
+                            <option value="0">不限</option>
+                            <option value="8">8 种</option>
+                            <option value="16">16 种</option>
+                            <option value="24" selected>24 种</option>
+                            <option value="32">32 种</option>
+                            <option value="48">48 种</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-group">
+                        <label for="gridSizeSelect">显示格子大小</label>
+                        <select id="gridSizeSelect">
+                            <option value="24">小 (24px)</option>
+                            <option value="32" selected>中 (32px)</option>
+                            <option value="40">大 (40px)</option>
+                            <option value="48">特大 (48px)</option>
+                        </select>
+                    </div>
+
+                    <button class="btn" id="convertBtn" disabled>转换为拼豆图案</button>
+                </div>
+
+                <div class="card color-legend-card">
+                    <h2 class="card-title">色号与用量</h2>
+                    <div class="color-legend">
+                        <div class="color-items" id="colorItems"></div>
+                    </div>
+                    <div class="download-btns">
+                        <button class="btn" id="downloadCanvas">下载图案</button>
+                        <button class="btn btn-secondary" id="downloadLegend">下载色号表</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拖拽调整手柄 -->
+            <div class="resize-handle" id="resizeHandle"></div>
+
+            <div class="right-panel">
+                <div class="card result-card">
+                    <h2 class="card-title">转换结果</h2>
+
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <div>正在转换中...</div>
+                    </div>
+
+                    <div class="result-area" id="resultArea">
+                        <div class="toolbar">
+                            <button id="pickerTool" class="tool-btn" title="吸管工具">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l4 4-1.5 1.5M9 15l-3 3M5 21l4-9 2.5 2.5-1 4M19 13l-4 4"/>
+                                </svg>
+                            </button>
+                            <input type="color" id="colorPicker" title="选择颜色" value="#ff0000">
+                            <button id="gridLineTool" class="tool-btn" title="格子线">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                    <line x1="9" y1="3" x2="9" y2="21"/>
+                                    <line x1="15" y1="3" x2="15" y2="21"/>
+                                    <line x1="3" y1="9" x2="21" y2="9"/>
+                                    <line x1="3" y1="15" x2="21" y2="15"/>
+                                </svg>
+                            </button>
+                            <label class="tool-checkbox" title="显示格子线">
+                                <input type="checkbox" id="gridLineToggle" checked>
+                                <span>格子线</span>
+                            </label>
+                        </div>
+                        <div class="result-grid-wrapper" id="resultGridWrapper">
+                            <div class="result-canvas-container" id="resultGridContainer">
+                                <div id="resultGrid"></div>
+                            </div>
+                        </div>
+                        <div class="result-canvas-container result-canvas-hidden">
+                            <canvas id="resultCanvas"></canvas>
+                        </div>
+
+                        <div class="stats" id="stats">
+                            <div class="stat-item">
+                                <span class="stat-label">颗粒总数:</span>
+                                <span class="stat-value" id="totalBeads">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">使用颜色:</span>
+                                <span class="stat-value" id="usedColors">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">图案尺寸:</span>
+                                <span class="stat-value" id="patternSize">0 × 0 cm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="brand_colors.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

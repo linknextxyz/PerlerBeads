@@ -1,0 +1,375 @@
+/* 拼豆像素对齐工具 - 专用样式 */
+
+/* 参考线控制区 */
+.line-controls {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.line-controls h3 {
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.control-group {
+    margin-bottom: 12px;
+}
+
+.control-group label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.control-group label span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.control-group input[type="range"],
+.control-group input[type="number"] {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 3px;
+    outline: none;
+}
+
+.control-group input[type="number"] {
+    height: 32px;
+    padding: 0 8px;
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.control-group input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* 参考线微调行 */
+.line-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.line-slider-row input[type="range"] {
+    flex: 1;
+}
+
+.line-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    color: #333;
+    user-select: none;
+    pointer-events: auto;
+    position: relative;
+    z-index: 100;
+}
+
+.line-btn:disabled {
+    pointer-events: none;
+    background: #f5f5f5;
+    color: #ccc;
+}
+
+.line-btn:hover {
+    background: #f0f0f0;
+    border-color: var(--primary-color);
+}
+
+.line-btn:active {
+    background: #e0e0e0;
+    transform: scale(0.95);
+}
+
+/* 格子预览 */
+.grid-preview {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.grid-preview h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.grid-info p {
+    margin: 5px 0;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.grid-info span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* 色号替换区域 */
+.color-replace-section {
+    margin: 20px 0;
+}
+
+.color-replace-section h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.color-replace-controls {
+    max-height: 200px;
+}
+
+.color-list-scroll {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: #fff;
+}
+
+.color-list-scroll .color-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+}
+
+.color-item-replace {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 70px;
+    height: 32px;
+    box-sizing: border-box;
+}
+
+.color-item-replace:hover {
+    background: #e8e8e8;
+}
+
+.color-item-replace.selected {
+    background: var(--primary-color);
+    color: white;
+}
+
+.color-item-replace .color-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* 对齐预览区 */
+.alignment-preview {
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #f5f5f5;
+    position: relative;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.image-container img {
+    display: block;
+    max-width: none;
+    transform-origin: top left;
+}
+
+/* 参考线样式 */
+.reference-line {
+    position: absolute;
+    pointer-events: none;
+}
+
+.line-y1, .line-y2 {
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e74c3c;
+    opacity: 0.8;
+}
+
+.line-x1, .line-x2 {
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #3498db;
+    opacity: 0.8;
+}
+
+/* 选中的区域 */
+.selected-area {
+    position: absolute;
+    border: 2px dashed #27ae60;
+    background: rgba(39, 174, 96, 0.1);
+    pointer-events: none;
+}
+
+/* 预览控制条 */
+.preview-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.preview-controls .tool-btn {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+}
+
+.zoom-level {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: #555;
+}
+
+/* 四个角点详情 */
+.corner-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.corner-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.corners-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.corner-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.corner-label {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.corner-pos {
+    font-size: 0.8rem;
+    color: #333;
+    font-family: monospace;
+}
+
+.corner-color {
+    width: 30px;
+    height: 30px;
+    margin-top: 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+/* 结果区 */
+.result-section {
+    margin-top: 20px;
+    margin: 100px 20px 20px 20px;
+}
+
+.result-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.result-toolbar .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.result-toolbar .download-btns {
+    display: flex;
+    gap: 8px;
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .corners-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .result-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .result-toolbar .download-btns {
+        width: 100%;
+    }
+    
+    .result-toolbar .download-btns .btn {
+        flex: 1;
+    }
+}
